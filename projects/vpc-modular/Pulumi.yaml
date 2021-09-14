@@ -1,0 +1,3 @@
+name: vpc-modular
+runtime: go
+description: VPC project using a module in Go
