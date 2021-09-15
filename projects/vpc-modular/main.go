@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Trojan295/pulumi-poc/pkg/utils"
 	"github.com/Trojan295/pulumi-poc/pkg/vpc"
 	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -30,6 +31,18 @@ func main() {
 		}
 
 		ctx.Export("vpcId", output.Vpc.ID())
+
+		privateSubnetIDs := make([]interface{}, 0)
+		for _, subnet := range output.PrivateSubnets {
+			privateSubnetIDs = append(privateSubnetIDs, subnet.ID().ToStringOutput())
+		}
+		ctx.Export("privateSubnetIDs", pulumi.All(privateSubnetIDs...).ApplyT(utils.StringArrayOutputFunc))
+
+		publicSubnetIDs := make([]interface{}, 0)
+		for _, subnet := range output.PublicSubnets {
+			publicSubnetIDs = append(publicSubnetIDs, subnet.ID().ToStringOutput())
+		}
+		ctx.Export("publicSubnetIDs", pulumi.All(publicSubnetIDs...).ApplyT(utils.StringArrayOutputFunc))
 
 		return nil
 	})

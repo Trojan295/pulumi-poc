@@ -24,9 +24,9 @@ func (in *VpcInput) Validate() error {
 }
 
 type VpcOutput struct {
-	Vpc           *ec2.Vpc
-	PrivateSubnet []*ec2.Subnet
-	PublicSubnets []*ec2.Subnet
+	Vpc            *ec2.Vpc
+	PrivateSubnets []*ec2.Subnet
+	PublicSubnets  []*ec2.Subnet
 
 	NatGateway      *ec2.NatGateway
 	InternetGateway *ec2.InternetGateway
@@ -156,7 +156,7 @@ func newPrivateSubnets(ctx *pulumi.Context, input *VpcInput, output *VpcOutput) 
 		return err
 	}
 
-	output.PrivateSubnet = make([]*ec2.Subnet, 0, len(input.PrivateSubnetCidrBlocks))
+	output.PrivateSubnets = make([]*ec2.Subnet, 0, len(input.PrivateSubnetCidrBlocks))
 
 	for i, cidr := range input.PrivateSubnetCidrBlocks {
 		az := input.AvailabilityZones[i]
@@ -179,7 +179,7 @@ func newPrivateSubnets(ctx *pulumi.Context, input *VpcInput, output *VpcOutput) 
 			return err
 		}
 
-		output.PrivateSubnet = append(output.PrivateSubnet, subnet)
+		output.PrivateSubnets = append(output.PrivateSubnets, subnet)
 	}
 
 	return nil
